@@ -12,7 +12,7 @@ body {
 
 #top-handle {
   height: 12px;
-  background: rgb(0, 0, 85);
+  background: rgb(55, 55, 55);
   cursor: row-resize;
   position: relative;
   z-index: 1;
@@ -26,10 +26,10 @@ body {
   transform: translate(-50%, -50%);
   width: 20px;
   height: 20px;
-  background: blue;
+  background: rgb(28, 28, 28);
   border-radius: 50%;
   z-index: 2;
-  box-shadow: 0 0 5px 3px blue;
+  box-shadow: 0 0 5px 3px rgba(0, 0, 0, 0.4);
 }
 
 #middle-area {
@@ -47,7 +47,7 @@ body {
 #code {
   flex-grow: 1;
   width: 100%;
-  background-color: #292853;
+  background-color: #2b2b2b;
   overflow-y: scroll;
   color: #f0f0f0;
   resize: none;
@@ -68,27 +68,27 @@ body {
   padding: 10px;
   overflow-y: auto;
   position: relative;
-  box-shadow: 0 0 10px 5px black;
+  box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.4);
 }
 
 #terminal-bar {
   height: 150px;
   display: flex;
-  border-top: 4px solid #000788;
-  background: #1a1a3f;
+  border-top: 4px solid #515151;
+  background: #1a1a1a;
   z-index: 2;
 }
 
 #button {
   width: 50px;
-  background: #040456;
+  background: #2b2b2b;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   padding: 5px 5px;
   gap: 10px;
   box-sizing: border-box;
-  border-right: 5px solid rgb(10, 41, 94);
+  border-right: 5px solid rgb(64, 64, 64);
 }
 
 img {
@@ -108,18 +108,18 @@ img {
 }
 
 #run-btn {
-  background-color: #00c896;
+  background-color: #5a5a5a;
 }
 #run-btn:hover {
-  background-color: #00dfae;
+  background-color: #888;
   transform: scale(1.05);
 }
 
 #stop-btn {
-  background-color: #ff4b4b;
+  background-color: #777;
 }
 #stop-btn:hover {
-  background-color: #ff6b6b;
+  background-color: #888;
   transform: scale(1.05);
 }
 
@@ -128,7 +128,7 @@ img {
   padding: 10px;
   overflow-y: auto;
   white-space: pre-wrap;
-  color: white;
+  color: #cccccc;
   overflow-y: scroll;
   font-family: 'D2Coding', 'JetBrains Mono', 'Consolas', 'Courier New', 'monospace', '맑은 고딕', 'Apple SD Gothic Neo', sans-serif;
   font-size: 14px;
