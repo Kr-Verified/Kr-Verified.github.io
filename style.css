@@ -7,7 +7,7 @@ html, body {
 }
 
 body {
-  background-color: rgb(112, 112, 112);
+  background-color: black;
 }
 
 #top-handle {
@@ -15,6 +15,8 @@ body {
   background: #ccc;
   cursor: row-resize;
   position: relative;
+  z-index: 1;
+  display: flex;
 }
 
 #top-handle .circle {
@@ -26,6 +28,7 @@ body {
   height: 20px;
   background: #004782;
   border-radius: 50%;
+  z-index: 2;
 }
 
 #middle-area {
@@ -42,20 +45,21 @@ body {
 #code {
   flex-grow: 1;
   width: 100%;
-  background-color: #404040;
-  color: white;
+  background-color: #1e1e2f;
+  color: #f0f0f0;
   resize: none;
 }
 
 #code::placeholder {
-  color: white;
+  color: rgb(197, 197, 197);
 }
 
 #run {
   flex: 1;
-  background: white;
+  background: rgb(149, 149, 149);
   padding: 10px;
   overflow-y: auto;
+  position: relative;
 }
 
 #terminal-bar {
@@ -63,6 +67,7 @@ body {
   display: flex;
   border-top: 4px solid #060061;
   background: #303030;
+  z-index: 1;
 }
 
 #button {
@@ -83,9 +88,18 @@ body {
   cursor: pointer;
 }
 
+#run-btn {
+  background-color: #00c896;
+}
+#stop-btn {
+  background-color: #ff4b4b;
+}
+
 #terminal {
   flex: 1;
   padding: 10px;
   overflow-y: auto;
   white-space: pre-wrap;
+  color: white;
+  overflow-y: scroll;
 }

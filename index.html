@@ -8,20 +8,20 @@
 </head>
 <body>
   <div id="top-handle">
-    <div class="circle"></div>
+    <div id="circle" class="circle"></div>
   </div>
 
   <div id="middle-area">
     <div id="code-area">
-      <textarea placeholder='출력 "모두들 안녕!"' id="code"></textarea>
+      <textarea placeholder='출력 "모두들 안녕!"              도움 -> 문법 설명' id="code"></textarea>
     </div>
     <div id="run"></div>
   </div>
 
   <div id="terminal-bar">
     <div id="button">
-      <button onclick="run()">▶️</button>
-      <button onclick="stop()">❌</button>
+      <button id="run-btn" onclick="run()">▶️</button>
+      <button id="stop-btn" onclick="stop()">❌</button>
     </div>
     <div id="terminal"></div>
   </div>

@@ -4,6 +4,7 @@ const terminal = document.getElementById("terminal");
 const runArea = document.getElementById("run");
 const topHandle = document.getElementById("top-handle");
 const middleArea = document.getElementById("middle-area");
+const circle = document.getElementById("circle");
 let pos = 0;
 let start_pos = 0;
 let variable_data = {};
@@ -60,7 +61,7 @@ window.addEventListener("mousemove", (e) => {
 
   const middleRect = middleArea.getBoundingClientRect();
   const minWidth = 100; // 최소 너비 제한
-  const maxWidth = middleRect.width - minWidth - topHandle.offsetWidth;
+  const maxWidth = middleRect.width - minWidth;
 
   let newCodeWidth = e.clientX - middleRect.left;
 
@@ -69,6 +70,7 @@ window.addEventListener("mousemove", (e) => {
 
   // flex-basis(px)로 크기 지정
   codeArea.style.flex = `0 0 ${newCodeWidth}px`;
+  circle.style.left = `${newCodeWidth}px`;
   runArea.style.flex = `1 1 auto`; // run은 나머지 공간 차지
 });
 
@@ -81,20 +83,17 @@ class Token {
 }
 
 function error(data) {
-  console.log("Error: " + data);
+  terminal.innerHTML += `<p style="color:red;">Error: ${data}</p>`;
 }
 
 function separate_type(valueStr) {
   let tokens = [];
   if (typeof valueStr === "string") {
     tokens = valueStr.match(/"(?:[^"\\]|\\.)*"|\d+|\w+|==|>=|<=|[%()+\-*/=><!]|참|거짓|ture|false/g);
-    console.log("string:", tokens);
   }else {
     tokens = valueStr
-    console.log("not:", tokens);
   }
   if (tokens===null) tokens = [valueStr];
-  console.log('tokens', tokens);
   const result = [];
   for (let token of tokens) {
     if (!isNaN(token)) {
@@ -126,8 +125,15 @@ function separate_type(valueStr) {
 }
 
 function AbstractCommand(line) {
+  if (line.trim() == "") return;
   if (line.trim()==="끝") {
     end();
+    return;
+  }else if (line.trim()==="도움") {
+    help();
+    return;
+  }else if (line.trim()==="다음") {
+    next_line();
     return;
   }
   const firstSpace = line.indexOf(" ");
@@ -165,15 +171,10 @@ function variable(value) {
 }
 
 function calculate_data(datas) {
-  console.log("함수 시작", datas);
   const tokens = separate_type(datas);
-  console.log("토큰 성공", tokens);
   const parser = createParser(tokens);
-  console.log("파서 만들기 성공", parser);
   const temp = parser.parse();
-  console.log("파서 성공", temp);
   const result = evaluate(temp);
-  console.log("계산 성공", result);
   return result;
 }
 
@@ -284,7 +285,11 @@ function make_var(name, value, type) {
 }
 
 function print(data) {
-  alert(calculate_data(data).value);
+  terminal.innerText += calculate_data(data).value;
+}
+
+function next_line() {
+  terminal.innerText += "\n";
 }
 
 // function changeType_strAint(data) {
@@ -326,22 +331,46 @@ function create_object(value) {
 class object {
   constructor(data) {
     const parts = data.trim().split(/\s+/);
-    if (!(parts.length >= 3 || (parts.length === 2 && parts[1] === "제거"))) {
+    if (!(parts.length >= 3 || (parts.length === 2 && (parts[1] === "제거" || parts[1] === "색상")))) {
       error(`올바르지 않은 형식 "${data}"`);
       return;
     }
     let rest;
     [this.name, this.func, ...rest] = parts;
     rest = (rest.join(" ")).split(",");
-    this.value = rest.map(v => calculate_data(v));
-    console.log(this.value);
+    if (this.func === "색상") this.value = rest;
+    else this.value = rest.map(v => calculate_data(v));
     this.func_type();
   }
 
   func_type() {
     if (this.func==="크기") this.size();
     else if (this.func==="이동") this.move();
-    else if (this.func=="제거") this.remove();
+    else if (this.func==="제거") this.remove();
+    else if (this.func==="색상") this.color();
+  }
+
+  color() {
+    if (this.value.length > 1) {
+      error(`"${this.value}" 올바르지 않는 문법!`);
+      return;
+    }
+    let [color] = this.value;
+    let temp = color;
+    if (temp==="빨강") temp = "red";
+    else if (temp==="주황") temp = "orange";
+    else if (temp==="노랑") temp = "yellow";
+    else if (temp==="연두") temp = "yellowgreen";
+    else if (temp==="초록") temp = "green";
+    else if (temp==="하늘") temp = "skyblue";
+    else if (temp==="파랑") temp = "blue";
+    else if (temp==="남") temp = "navy";
+    else if (temp==="보라") temp = "purple";
+    else if (temp==="갈색") temp = "brown";
+    else if (temp==="검정") temp = "black";
+    else if (temp==="하양") temp = "white";
+    else if (temp==="핑크") temp = "pink";
+    object_data[this.name].style.backgroundColor = temp;
   }
 
   size() {
@@ -382,7 +411,6 @@ function end() {
   if (data.type === "repeatT") pos = data.value;
 }
 
-
 function run() {
   if (is_running) return;
   is_running = true;
@@ -393,6 +421,8 @@ function run() {
   function_data = {}
   object_data = {}
   local_stack = []
+  runArea.innerHTML = '';
+  terminal.innerHTML = '';
   skip = false;
   start_pos = 0;
   is_stop = false;
@@ -413,4 +443,8 @@ function run() {
 }
 function stop() {
   is_stop = true;
+}
+
+function help() {
+  terminal.innerText = "도움 -> 문법 설명\n변수 변수명 = 값 -> 변수에 값 저장[선언] (변수 = 값)\n조건 조건문 -다음 줄:내용들, 마지막 줄:'끝'\n반복 조건문 -다음 줄:내용들, 마지막 줄:'끝'\n물체 물체명 html태그 -> 오브젝트 생성\n물체 [크기 가로,세로 -> 크기변경 / 색상 색깔 -> 색 변경 / 이동 x,y -> 현재 위치에서 x,y만큼 움직임 / 삭제 -> 그 물체 제거]\n입력 변수명 설명(값) -> 설명이 적힌 프롬프트가 올라오고, 입력한 그 값이 지정변수에 저장\n출력 내용 -> 내용을 터미널에 출력\n다음 -> 터미널에 줄바꿈";
 }
