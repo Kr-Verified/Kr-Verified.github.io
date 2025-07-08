@@ -1,72 +1,91 @@
 html, body {
   height: 100%;
-  width: 100%;
   margin: 0;
   padding: 0;
   overflow: hidden;
+  font-family: sans-serif;
 }
 
-#container {
+body {
+  background-color: rgb(112, 112, 112);
+}
+
+#top-handle {
+  height: 12px;
+  background: #ccc;
+  cursor: row-resize;
+  position: relative;
+}
+
+#top-handle .circle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 20px;
+  height: 20px;
+  background: #004782;
+  border-radius: 50%;
+}
+
+#middle-area {
   display: flex;
-  width: 100vw;
-  height: 100vh;
-  padding-top: 1%;
+  height: calc(100vh - 12px - 150px);
 }
 
 #code-area {
   flex: 1;
-  padding: 10px;
-  background: #f4f4f4;
   display: flex;
   flex-direction: column;
 }
 
-#code-area textarea {
+#code {
+  flex-grow: 1;
   width: 100%;
-  height: 80%;
+  background-color: #404040;
+  color: white;
   resize: none;
+}
+
+#code::placeholder {
+  color: white;
 }
 
 #run {
   flex: 1;
-  background: #e8f5e9;
+  background: white;
   padding: 10px;
-  overflow: auto;
+  overflow-y: auto;
 }
 
-#drag-handle {
-  width: 10px;
-  cursor: col-resize;
-  position: relative;
-  background: #ccc;
+#terminal-bar {
+  height: 150px;
+  display: flex;
+  border-top: 4px solid #060061;
+  background: #303030;
 }
 
-#drag-handle .circle {
-  width: 14px;
-  height: 14px;
-  background: #555;
-  border-radius: 50%;
-  position: absolute;
-  top: 0;
-  left: -2px;
-  transform: translateY(-50%);
+#button {
+  width: 50px;
+  background: #404040;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 5px 5px;
+  gap: 10px;
+  box-sizing: border-box;
+}
+
+#button *{
+  width: 100%;
+  height: 40px;
+  font-size: 20px;
+  cursor: pointer;
 }
 
 #terminal {
-  border: 1px solid black;
-  height: 15%;
-  width: 100%;
-}
-
-.hide {
-  display: none;
-}
-
-#viewBar {
-  position: absolute;
-}
-
-.off {
-  right: 100vw;
-  top: 50vh;
+  flex: 1;
+  padding: 10px;
+  overflow-y: auto;
+  white-space: pre-wrap;
 }

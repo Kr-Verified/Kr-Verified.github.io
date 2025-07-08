@@ -2,6 +2,8 @@ const codeArea = document.getElementById("code-area");
 const code = document.getElementById("code");
 const terminal = document.getElementById("terminal");
 const runArea = document.getElementById("run");
+const topHandle = document.getElementById("top-handle");
+const middleArea = document.getElementById("middle-area");
 let pos = 0;
 let start_pos = 0;
 let variable_data = {};
@@ -12,6 +14,7 @@ let depth = 0;
 let is_stop = false;
 let is_running = false;
 let skip = false;
+let isDragging = false;
 // 코드 작성 -> 실행 버튼 -> 결과 html 창 -> if press close: return code_page
 // text->line->"와 로 분리 -> AbstructCommand ("str"", "~"), ("int", "1234"), ("var", "n"), ("func", "print"), ("LPAR", "("), ("RPAR", ")"), ("start", "{"), ("end", "}")
 //                                                                       is alpha.            ()여부
@@ -41,6 +44,35 @@ system = 배열, 변수, 함수
 
 변수 변수명 = "
 */
+
+topHandle.addEventListener("mousedown", () => {
+  isDragging = true;
+  document.body.style.userSelect = "none"; // 드래그시 텍스트 선택 방지
+});
+
+window.addEventListener("mouseup", () => {
+  isDragging = false;
+  document.body.style.userSelect = "auto";
+});
+
+window.addEventListener("mousemove", (e) => {
+  if (!isDragging) return;
+
+  const middleRect = middleArea.getBoundingClientRect();
+  const minWidth = 100; // 최소 너비 제한
+  const maxWidth = middleRect.width - minWidth - topHandle.offsetWidth;
+
+  let newCodeWidth = e.clientX - middleRect.left;
+
+  // 최소/최대값 클램핑
+  newCodeWidth = Math.max(minWidth, Math.min(newCodeWidth, maxWidth));
+
+  // flex-basis(px)로 크기 지정
+  codeArea.style.flex = `0 0 ${newCodeWidth}px`;
+  runArea.style.flex = `1 1 auto`; // run은 나머지 공간 차지
+});
+
+// 작동코드
 class Token {
   constructor(type, value) {
     this.type = type
