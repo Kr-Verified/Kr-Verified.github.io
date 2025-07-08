@@ -1,0 +1,72 @@
+html, body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+#container {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  padding-top: 1%;
+}
+
+#code-area {
+  flex: 1;
+  padding: 10px;
+  background: #f4f4f4;
+  display: flex;
+  flex-direction: column;
+}
+
+#code-area textarea {
+  width: 100%;
+  height: 80%;
+  resize: none;
+}
+
+#run {
+  flex: 1;
+  background: #e8f5e9;
+  padding: 10px;
+  overflow: auto;
+}
+
+#drag-handle {
+  width: 10px;
+  cursor: col-resize;
+  position: relative;
+  background: #ccc;
+}
+
+#drag-handle .circle {
+  width: 14px;
+  height: 14px;
+  background: #555;
+  border-radius: 50%;
+  position: absolute;
+  top: 0;
+  left: -2px;
+  transform: translateY(-50%);
+}
+
+#terminal {
+  border: 1px solid black;
+  height: 15%;
+  width: 100%;
+}
+
+.hide {
+  display: none;
+}
+
+#viewBar {
+  position: absolute;
+}
+
+.off {
+  right: 100vw;
+  top: 50vh;
+}
