@@ -3,8 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Interpreter</title>
+  <title>GBY</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="/img/code.png">
 </head>
 <body>
   <div id="top-handle">
@@ -13,14 +14,14 @@
 
   <div id="middle-area">
     <div id="code-area">
-      <textarea placeholder='출력 "모두들 안녕!"              도움 -> 문법 설명' id="code"></textarea>
+      <textarea placeholder='출력 "모두들 안녕!"&#13;&#10;&#13;&#10;도움 -> 문법 설명' id="code"></textarea>
     </div>
     <div id="run"></div>
   </div>
 
   <div id="terminal-bar">
     <div id="button">
-      <button id="run-btn" onclick="run()">▶️</button>
+      <button id="run-btn" onclick="run()"><img src="/img/start.png" alt="start"></button>
       <button id="stop-btn" onclick="stop()">❌</button>
     </div>
     <div id="terminal"></div>

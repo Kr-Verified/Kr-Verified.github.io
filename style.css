@@ -12,7 +12,7 @@ body {
 
 #top-handle {
   height: 12px;
-  background: #ccc;
+  background: rgb(0, 0, 85);
   cursor: row-resize;
   position: relative;
   z-index: 1;
@@ -22,18 +22,20 @@ body {
 #top-handle .circle {
   position: absolute;
   top: 50%;
-  left: 50%;
+  left: 49.35%;
   transform: translate(-50%, -50%);
   width: 20px;
   height: 20px;
-  background: #004782;
+  background: blue;
   border-radius: 50%;
   z-index: 2;
+  box-shadow: 0 0 5px 3px blue;
 }
 
 #middle-area {
   display: flex;
   height: calc(100vh - 12px - 150px);
+  z-index: 1;
 }
 
 #code-area {
@@ -45,54 +47,80 @@ body {
 #code {
   flex-grow: 1;
   width: 100%;
-  background-color: #1e1e2f;
+  background-color: #292853;
+  overflow-y: scroll;
   color: #f0f0f0;
   resize: none;
+  border: none;
+  outline: none;
+  font-size: 15px;
+  font-family: 'D2Coding', 'JetBrains Mono', 'Consolas', 'Courier New', 'monospace', '맑은 고딕', 'Apple SD Gothic Neo', sans-serif;
 }
 
 #code::placeholder {
-  color: rgb(197, 197, 197);
+  color: #a2a2a2;
+  font-family: 'D2Coding', 'JetBrains Mono', 'Consolas', 'Courier New', 'monospace', '맑은 고딕', 'Apple SD Gothic Neo', sans-serif;
 }
 
 #run {
   flex: 1;
-  background: rgb(149, 149, 149);
+  background: #f5f7fb;
   padding: 10px;
   overflow-y: auto;
   position: relative;
+  box-shadow: 0 0 10px 5px black;
 }
 
 #terminal-bar {
   height: 150px;
   display: flex;
-  border-top: 4px solid #060061;
-  background: #303030;
-  z-index: 1;
+  border-top: 4px solid #000788;
+  background: #1a1a3f;
+  z-index: 2;
 }
 
 #button {
   width: 50px;
-  background: #404040;
+  background: #040456;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   padding: 5px 5px;
   gap: 10px;
   box-sizing: border-box;
+  border-right: 5px solid rgb(10, 41, 94);
+}
+
+img {
+  width: 100%;
 }
 
 #button *{
-  width: 100%;
+  width: 40px;
   height: 40px;
-  font-size: 20px;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  transition: all 0.2s ease;
   cursor: pointer;
+  padding: 0;
+  font-size:25px;
 }
 
 #run-btn {
   background-color: #00c896;
 }
+#run-btn:hover {
+  background-color: #00dfae;
+  transform: scale(1.05);
+}
+
 #stop-btn {
   background-color: #ff4b4b;
+}
+#stop-btn:hover {
+  background-color: #ff6b6b;
+  transform: scale(1.05);
 }
 
 #terminal {
@@ -102,4 +130,6 @@ body {
   white-space: pre-wrap;
   color: white;
   overflow-y: scroll;
+  font-family: 'D2Coding', 'JetBrains Mono', 'Consolas', 'Courier New', 'monospace', '맑은 고딕', 'Apple SD Gothic Neo', sans-serif;
+  font-size: 14px;
 }
