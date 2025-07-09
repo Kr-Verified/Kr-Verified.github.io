@@ -90,7 +90,7 @@ function error(data) {
 function separate_type(valueStr) {
   let tokens = [];
   if (typeof valueStr === "string") {
-    tokens = valueStr.match(/"(?:[^"\\]|\\.)*"|[-+]?\d+|==|>=|<=|[%()+\-*/=><!]|참|거짓|ture|false|[\w가-힣]+/g);
+    tokens = valueStr.match(/"(?:[^"\\]|\\.)*"|[-+]?\d+|!=|==|>=|<=|[%()+\-*/=><!]|참|거짓|ture|false|[\w가-힣]+/g);
   }else {
     tokens = valueStr
   }
