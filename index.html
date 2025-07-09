@@ -21,8 +21,10 @@
 
   <div id="terminal-bar">
     <div id="button">
-      <button id="run-btn" onclick="run()"><img src="/img/start.png" alt="start"></button>
-      <button id="stop-btn" onclick="stop()">❌</button>
+      <button class="icon" onclick="run()"><svg id="run-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 165 191" fill="none">
+  <path d="M10.75 173.01V17.9902L145.001 95.5L10.75 173.01Z" stroke="#D4D4D4" stroke-width="20"/>
+</svg></button>
+      <button id="stop-btn" onclick="stop()"><div id="stop-icon"></div></button>
     </div>
     <div id="terminal"></div>
   </div>

@@ -7,12 +7,12 @@ html, body {
 }
 
 body {
-  background-color: black;
+  background-color: #121212;
 }
 
 #top-handle {
   height: 12px;
-  background: rgb(55, 55, 55);
+  background: #2a2a2a;
   cursor: row-resize;
   position: relative;
   z-index: 1;
@@ -26,7 +26,7 @@ body {
   transform: translate(-50%, -50%);
   width: 20px;
   height: 20px;
-  background: rgb(28, 28, 28);
+  background: #3a3a3a;
   border-radius: 50%;
   z-index: 2;
   box-shadow: 0 0 5px 3px rgba(0, 0, 0, 0.4);
@@ -47,12 +47,14 @@ body {
 #code {
   flex-grow: 1;
   width: 100%;
-  background-color: #2b2b2b;
+  background-color: #1e1e1e;
   overflow-y: scroll;
-  color: #f0f0f0;
+  color: #f5f5f5;
   resize: none;
   border: none;
   outline: none;
+  padding: 10px;
+  line-height: 1.6;
   font-size: 15px;
   font-family: 'D2Coding', 'JetBrains Mono', 'Consolas', 'Courier New', 'monospace', '맑은 고딕', 'Apple SD Gothic Neo', sans-serif;
 }
@@ -64,63 +66,70 @@ body {
 
 #run {
   flex: 1;
-  background: #f5f7fb;
+  background-color: #eaeaea;
   padding: 10px;
   overflow-y: auto;
   position: relative;
   box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.4);
+  border: 1px solid #bbb;
+  border-radius: 4px;
 }
 
 #terminal-bar {
   height: 150px;
   display: flex;
   border-top: 4px solid #515151;
-  background: #1a1a1a;
+  background: #181818;
   z-index: 2;
 }
 
 #button {
-  width: 50px;
-  background: #2b2b2b;
+  width: 55px;
+  padding: 5px 0 5px 5px;
+  background: #181818;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  padding: 5px 5px;
   gap: 10px;
   box-sizing: border-box;
   border-right: 5px solid rgb(64, 64, 64);
 }
 
-img {
-  width: 100%;
-}
-
-#button *{
+button {
   width: 40px;
   height: 40px;
   border: none;
   border-radius: 6px;
-  color: white;
-  transition: all 0.2s ease;
+  transition: all 0.2s ease-in-out;
   cursor: pointer;
   padding: 0;
   font-size:25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0);
 }
 
-#run-btn {
-  background-color: #5a5a5a;
+button:hover {
+  transform: scale(1.1);
+  background-color: #3a3a3a;
 }
+
 #run-btn:hover {
-  background-color: #888;
+  color: #00c896;
   transform: scale(1.05);
 }
 
-#stop-btn {
-  background-color: #777;
-}
 #stop-btn:hover {
-  background-color: #888;
   transform: scale(1.05);
+}
+
+#stop-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  border-radius: 6px;
+  border: 4px solid #D4D4D4;
 }
 
 #terminal {
@@ -128,8 +137,8 @@ img {
   padding: 10px;
   overflow-y: auto;
   white-space: pre-wrap;
-  color: #cccccc;
-  overflow-y: scroll;
+  color: #dddddd;
+  line-height: 1.6;
   font-family: 'D2Coding', 'JetBrains Mono', 'Consolas', 'Courier New', 'monospace', '맑은 고딕', 'Apple SD Gothic Neo', sans-serif;
   font-size: 14px;
 }

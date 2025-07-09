@@ -84,12 +84,13 @@ class Token {
 
 function error(data) {
   terminal.innerHTML += `<p style="color:red;">Error: ${data}</p>`;
+  console.log(`Error: ${data}`);
 }
 
 function separate_type(valueStr) {
   let tokens = [];
   if (typeof valueStr === "string") {
-    tokens = valueStr.match(/"(?:[^"\\]|\\.)*"|\d+|\w+|==|>=|<=|[%()+\-*/=><!]|참|거짓|ture|false/g);
+    tokens = valueStr.match(/"(?:[^"\\]|\\.)*"|[-+]?\d+|==|>=|<=|[%()+\-*/=><!]|참|거짓|ture|false|[\w가-힣]+/g);
   }else {
     tokens = valueStr
   }
@@ -113,7 +114,7 @@ function separate_type(valueStr) {
         else if (val === "참" || val === "거짓" || val === "true" | val === "false") val = new Token("bool", val);
         else val = new Token("str", String(val));
       }
-      if (val.type === "str") val.value = `"${val.value}"`;
+      if (val.type === "str") val.value = val.value.startsWith('"')?val.value:`"${val.value}"`;
       result.push(...separate_type(val.value));
     } else if (token in object_data) {
       result.push(new Token("object", object_data[token]));
@@ -124,7 +125,15 @@ function separate_type(valueStr) {
   return result;
 }
 
-function AbstractCommand(line) {
+function wait(ms) {
+  return new Promise((resolve => {
+    setTimeout(() => {
+      resolve();
+    }, ms)
+  }));
+}
+
+async function AbstractCommand(line) {
   if (line.trim() == "") return;
   if (line.trim()==="끝") {
     end();
@@ -155,6 +164,7 @@ function AbstractCommand(line) {
   else if (command == "조건") control(value, "condition");
   else if (command == "반복") control(value, "repeat");
   else if (command == "물체") create_object(value);
+  else if (command == "정지") await wait(value);
   else if (command in object_data) new object(line);
   else if (name && name in variable_data) variable(line);
   // 명령 종류: 변수 선언, 더하가, 연산, 이프
@@ -192,7 +202,7 @@ function createParser(tokens) {
 
   const parseExpression = () => {
     let left = parseTerm();
-    while (current < tokens.length && tokens[current].type === 'oper' && (tokens[current].value === '+' || tokens[current].value === '-')) {
+    while (current < tokens.length && tokens[current].type === 'oper' && (['+', '-'].includes(tokens[current].value))) {
       const op = tokens[current++].value;
       left = { type: 'BinaryOp', op, left, right: parseTerm() };
     }
@@ -242,8 +252,15 @@ function evaluate(node) {
   }else if (node.type === "BinaryOp") {
     let left = evaluate(node.left);
     let right = evaluate(node.right);
+
     if (left.type === 'num') left = Number(left.value);
+    else if (left.type === 'bool') left = Boolean(left.value);
+    else left = left.value;
+
     if (right.type === 'num') right = Number(right.value);
+    else if (right.type === 'bool') right = Boolean(left.value);
+    else right = right.value;
+
     switch (node.op) {
       case "+": return new Token("num", String(left + right));
       case "-": return new Token("num", String(left - right));
@@ -411,7 +428,7 @@ function end() {
   if (data.type === "repeatT") pos = data.value;
 }
 
-function run() {
+async function run() {
   if (is_running) return;
   is_running = true;
   let lines = code.value.split("\n");
@@ -436,7 +453,7 @@ function run() {
       if (depth==0) skip = false;
       else pos++;
     }else {
-      AbstractCommand(lines[pos++]);
+      await AbstractCommand(lines[pos++]);
     }
   }
   is_running = false;
@@ -446,5 +463,5 @@ function stop() {
 }
 
 function help() {
-  terminal.innerText = "도움 -> 문법 설명\n변수 변수명 = 값 -> 변수에 값 저장[선언] (변수 = 값)\n조건 조건문 -다음 줄:내용들, 마지막 줄:'끝'\n반복 조건문 -다음 줄:내용들, 마지막 줄:'끝'\n물체 물체명 html태그 -> 오브젝트 생성\n물체 [크기 가로,세로 -> 크기변경 / 색상 색깔 -> 색 변경 / 이동 x,y -> 현재 위치에서 x,y만큼 움직임 / 삭제 -> 그 물체 제거]\n입력 변수명 설명(값) -> 설명이 적힌 프롬프트가 올라오고, 입력한 그 값이 지정변수에 저장\n출력 내용 -> 내용을 터미널에 출력\n다음 -> 터미널에 줄바꿈";
+  terminal.innerText = "도움 -> 문법 설명\n변수 변수명 = 값 -> 변수에 값 저장[선언] (변수 = 값)\n조건 조건문 -다음 줄:내용들, 마지막 줄:'끝'\n반복 조건문 -다음 줄:내용들, 마지막 줄:'끝'\n물체 물체명 html태그 -> 오브젝트 생성\n물체명 [크기 가로,세로 -> 크기변경 / 색상 색깔 -> 색 변경 / 이동 x,y -> 현재 위치에서 x,y만큼 움직임 / 삭제 -> 그 물체 제거]\n입력 변수명 설명(값) -> 설명이 적힌 프롬프트가 올라오고, 입력한 그 값이 지정변수에 저장\n출력 내용 -> 내용을 터미널에 출력\n다음 -> 터미널에 줄바꿈\n정지 ms -> ms만큼 코드 수행 중지함.\n";
 }
