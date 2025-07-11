@@ -10,6 +10,29 @@ body {
   background-color: #121212;
 }
 
+#top-bar {
+  height: 50px;
+  background-color: #181818;
+  border-bottom: 3px solid gray;
+  display: flex;
+  align-items: center;
+  padding-left: 2%;
+  padding-right: 1%;
+  justify-content: space-between;
+}
+
+#gby {
+  color: white;
+  text-shadow: 0 0 10px blue;
+  font-size: xx-large;
+  font-weight: 900;
+  margin: 0;
+}
+
+#gby-img {
+  height: 100%;
+}
+
 #top-handle {
   height: 12px;
   background: #2a2a2a;
@@ -30,11 +53,12 @@ body {
   border-radius: 50%;
   z-index: 2;
   box-shadow: 0 0 5px 3px rgba(0, 0, 0, 0.4);
+  cursor: col-resize;
 }
 
 #middle-area {
   display: flex;
-  height: calc(100vh - 12px - 150px);
+  height: calc(100vh - 12px - 200px);
   z-index: 1;
 }
 
@@ -75,24 +99,31 @@ body {
   border-radius: 4px;
 }
 
+#terminal-bar-top {
+  position: relative;
+  height: 5px;
+  background-color: #515151;
+  cursor: row-resize;
+  z-index: 3;
+  cursor: row-resize;
+}
+
 #terminal-bar {
-  height: 150px;
   display: flex;
-  border-top: 4px solid #515151;
   background: #181818;
   z-index: 2;
+  flex: 1 1 auto;
+  height: 150px;
 }
 
 #button {
-  width: 55px;
   padding: 5px 0 5px 5px;
   background: #181818;
   display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
+  justify-content: flex-end;
   gap: 10px;
   box-sizing: border-box;
-  border-right: 5px solid rgb(64, 64, 64);
+  
 }
 
 button {
@@ -135,7 +166,7 @@ button:hover {
 #terminal {
   flex: 1;
   padding: 10px;
-  overflow-y: auto;
+  overflow-y: scroll;
   white-space: pre-wrap;
   color: #dddddd;
   line-height: 1.6;

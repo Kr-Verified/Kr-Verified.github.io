@@ -1,10 +1,12 @@
 const codeArea = document.getElementById("code-area");
 const code = document.getElementById("code");
 const terminal = document.getElementById("terminal");
+const terminal_bar = document.getElementById("terminal-bar");
 const runArea = document.getElementById("run");
 const topHandle = document.getElementById("top-handle");
 const middleArea = document.getElementById("middle-area");
 const circle = document.getElementById("circle");
+const terminal_top = document.getElementById("terminal-bar-top");
 let pos = 0;
 let start_pos = 0;
 let variable_data = {};
@@ -16,39 +18,18 @@ let is_stop = false;
 let is_running = false;
 let skip = false;
 let isDragging = false;
-// 코드 작성 -> 실행 버튼 -> 결과 html 창 -> if press close: return code_page
-// text->line->"와 로 분리 -> AbstructCommand ("str"", "~"), ("int", "1234"), ("var", "n"), ("func", "print"), ("LPAR", "("), ("RPAR", ")"), ("start", "{"), ("end", "}")
-//                                                                       is alpha.            ()여부
-// 키워드 하나씩 제거해가면서 실행하는 방법 (키워드: 변수, 물체, )
-
-// var = {"n":"value", .......}, func = {"custom":[(tokens)], ....}
-
-// while tokens: tokens.popleft() -> token
-// if token.type == "start" -> local_stack += ++token.value > while token.type == "end". if not "end" -> raise "'}' is not exist ERROR"
-// if token.type == "LPAR" -> temp_stack += ++token.value > while token.type == "RPAR". if not "RPAR" -> raise "')' is not exist ERROR"
-// if token.type == "var" -> var[token.value]
-// if token.type == "func" -> tokens.insert(current_pos, func[token.value])
-/*
-Type = 숫자, 문자, 불리언
-system = 배열, 변수, 함수
-출력 내용 -> "ㅁㅇㄹㅁㄴㅇㄹ ㅁㄴㅇㄹ", 100, 변수명
-입력 변수명
-변수 변수명[] = 값
-
-상수 리터럴:
-문자열: "집가고싶다"
-숫자: 100, 100.0
-배열: [블람ㅇ니라ㅓㅁㄴ아ㅣ러, ㅁㄴㅇㄹㅁㄴㅇㄹㅁㄴㅇㄹㅁ]
-
-인식 가능한 값:
-모든 상수 리타럴, 변수명
-
-변수 변수명 = "
-*/
+let drag_terminal = false;
 
 topHandle.addEventListener("mousedown", () => {
+  drag_terminal = false;
   isDragging = true;
   document.body.style.userSelect = "none"; // 드래그시 텍스트 선택 방지
+});
+
+terminal_top.addEventListener("mousedown", () => {
+  drag_terminal = true;
+  isDragging = true;
+  document.body.style.userSelect = "none";
 });
 
 window.addEventListener("mouseup", () => {
@@ -60,18 +41,31 @@ window.addEventListener("mousemove", (e) => {
   if (!isDragging) return;
 
   const middleRect = middleArea.getBoundingClientRect();
-  const minWidth = 100; // 최소 너비 제한
-  const maxWidth = middleRect.width - minWidth;
+  if (drag_terminal) {
+    const minHeight = 100;
+    const maxHeight = window.innerHeight - minHeight;
 
-  let newCodeWidth = e.clientX - middleRect.left;
+    let newCodeHeight = e.clientY - middleRect.top;
+    const newTerminalHeight = window.innerHeight - newCodeHeight - topHandle.offsetHeight - document.getElementById("top-bar").offsetHeight - terminal_top.offsetHeight;
 
-  // 최소/최대값 클램핑
-  newCodeWidth = Math.max(minWidth, Math.min(newCodeWidth, maxWidth));
+    newCodeHeight = Math.max(minHeight, Math.min(newCodeHeight, maxHeight));
 
-  // flex-basis(px)로 크기 지정
-  codeArea.style.flex = `0 0 ${newCodeWidth}px`;
-  circle.style.left = `${newCodeWidth}px`;
-  runArea.style.flex = `1 1 auto`; // run은 나머지 공간 차지
+    middleArea.style.height = `${newCodeHeight}px`;
+    terminal_bar.style.height = `${newTerminalHeight}px`;
+  }else {
+    const minWidth = 100; // 최소 너비 제한
+    const maxWidth = middleRect.width - minWidth;
+
+    let newCodeWidth = e.clientX - middleRect.left;
+
+    // 최소/최대값 클램핑
+    newCodeWidth = Math.max(minWidth, Math.min(newCodeWidth, maxWidth));
+
+    // flex-basis(px)로 크기 지정
+    codeArea.style.flex = `0 0 ${newCodeWidth}px`;
+    circle.style.left = `${newCodeWidth}px`;
+    runArea.style.flex = `1 1 auto`; // run은 나머지 공간 차지"
+  }
 });
 
 // 작동코드
@@ -308,20 +302,6 @@ function print(data) {
 function next_line() {
   terminal.innerText += "\n";
 }
-
-// function changeType_strAint(data) {
-//   const firstSpace = data.indexOf(" ");
-//   const target = data.slice(0, firstSpace).trim();
-//   if (variable_data.includes(target)) {
-//     const next_type = data.slice(firstSpace+1).trim();
-//     const current_type = separate_type(target);
-//     if (current_type=="str" && next_type=="int" && isNaN(variable_data[target])) {
-//       variable_data[target] = Token(next_type, target);
-//     }else if (current_type=="int" && next_type=="str") {
-//       variable_data[target] = Token(next_type, variable_data[target]);
-//     }
-//   }
-// }
 
 function create_object(value) {
   const [name, type] = value.trim().split(/\s+/);

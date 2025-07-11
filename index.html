@@ -5,9 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>GBY</title>
   <link rel="stylesheet" href="style.css">
-  <link rel="icon" href="/img/code.png">
+  <link rel="icon" href="/img/gby.png">
 </head>
 <body>
+  <div id="top-bar">
+    <p id="gby">GBY</p>
+    <div id="button">
+      <button class="icon" onclick="run()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 139 153" fill="none">
+      <path d="M121 62.6436C131.667 68.8019 131.667 84.198 121 90.3564L34.75 140.153C24.0835 146.311 10.7503 138.613 10.75 126.297V26.7031C10.7503 14.3866 24.0835 6.68854 34.75 12.8467L121 62.6436Z" stroke="#D4D4D4" stroke-width="20"/>
+      </svg></button>
+      <button id="stop-btn" onclick="stop()"><div id="stop-icon"></div></button>
+    </div>
+  </div>
+
   <div id="top-handle">
     <div id="circle" class="circle"></div>
   </div>
@@ -19,13 +29,8 @@
     <div id="run"></div>
   </div>
 
+  <div id="terminal-bar-top"></div>
   <div id="terminal-bar">
-    <div id="button">
-      <button class="icon" onclick="run()"><svg id="run-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 165 191" fill="none">
-  <path d="M10.75 173.01V17.9902L145.001 95.5L10.75 173.01Z" stroke="#D4D4D4" stroke-width="20"/>
-</svg></button>
-      <button id="stop-btn" onclick="stop()"><div id="stop-icon"></div></button>
-    </div>
     <div id="terminal"></div>
   </div>
   </div>
