@@ -364,7 +364,7 @@ class object {
     let rest;
     [this.name, this.func, ...rest] = parts;
     let temp = rest.join(' ');
-    if (!(temp.includes(',')||this.func === "색상")) {
+    if (!(temp.includes(',')||this.func === "색상" || this.func === "제거" || this.func === "모서리")) {
       error("You miss ','");
       return;
     }
