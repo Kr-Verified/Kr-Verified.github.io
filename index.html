@@ -5,11 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>GBY</title>
   <link rel="stylesheet" href="style.css">
-  <link rel="icon" href="/img/gby.png">
+  <link rel="icon" href="img/logo.png?v=1">
 </head>
 <body>
   <div id="top-bar">
-    <p id="gby">GBY</p>
+    <div id="logo-wrap">
+      <img src="./img/logo-noBackGround.png" alt="logo">
+      <a id="gby" href="https://www.instagram.com/eunchong1761/">GBY</a>
+    </div>
     <div id="button">
       <button class="icon" onclick="run()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 139 153" fill="none">
       <path d="M121 62.6436C131.667 68.8019 131.667 84.198 121 90.3564L34.75 140.153C24.0835 146.311 10.7503 138.613 10.75 126.297V26.7031C10.7503 14.3866 24.0835 6.68854 34.75 12.8467L121 62.6436Z" stroke="#D4D4D4" stroke-width="20"/>
@@ -24,9 +27,15 @@
 
   <div id="middle-area">
     <div id="code-area">
-      <textarea placeholder='출력 "모두들 안녕!"&#13;&#10;&#13;&#10;도움 -> 문법 설명' id="code"></textarea>
+      <textarea placeholder='도움' id="code"></textarea>
     </div>
-    <div id="run"></div>
+    <div id="run">
+      <div id="run-svg" class="hide">
+        <svg xmlns="http://www.w3.org/2000/svg" width="139" height="124" viewBox="0 0 139 124" fill="none" style="position: absolute; left:calc(50% - 69.5px); top:calc(50% - 62px)">
+          <path d="M69.5 123.35L59.4225 114.502C23.63 83.1991 0 62.4868 0 37.2165C0 16.5042 16.819 0.350006 38.225 0.350006C50.318 0.350006 61.9245 5.77943 69.5 14.2922C77.0755 5.77943 88.682 0.350006 100.775 0.350006C122.181 0.350006 139 16.5042 139 37.2165C139 62.4868 115.37 83.1991 79.5775 114.502L69.5 123.35Z" fill="#FF0000"/>
+        </svg>
+      </div>
+    </div>
   </div>
 
   <div id="terminal-bar-top"></div>

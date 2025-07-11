@@ -1,5 +1,6 @@
 const codeArea = document.getElementById("code-area");
 const code = document.getElementById("code");
+const placeholder = document.getElementById("placeholder");
 const terminal = document.getElementById("terminal");
 const terminal_bar = document.getElementById("terminal-bar");
 const runArea = document.getElementById("run");
@@ -19,10 +20,22 @@ let is_running = false;
 let skip = false;
 let isDragging = false;
 let drag_terminal = false;
+let saveTimer;
+terminal.innerText = '▶ 왼쪽에 코드를 입력하고 실행해 보세요!\n예시: 출력 "모두들 안녕!"';
+code.value = window.localStorage.getItem("code") || "";
+
+code.addEventListener("input", () => {
+  console.log(code.value);
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(() => {
+    window.localStorage.setItem("code", code.value);
+  }, 500);
+});
 
 topHandle.addEventListener("mousedown", () => {
   drag_terminal = false;
   isDragging = true;
+  circle.classList.add('dragging');
   document.body.style.userSelect = "none"; // 드래그시 텍스트 선택 방지
 });
 
@@ -34,6 +47,7 @@ terminal_top.addEventListener("mousedown", () => {
 
 window.addEventListener("mouseup", () => {
   isDragging = false;
+  circle.classList.remove('dragging');
   document.body.style.userSelect = "auto";
 });
 
@@ -138,6 +152,10 @@ async function AbstractCommand(line) {
   }else if (line.trim()==="다음") {
     next_line();
     return;
+  }else if (line.trim()==="__박지혜__") {
+    easter_egg();
+    is_stop = true;
+    return;
   }
   const firstSpace = line.indexOf(" ");
   const firstEqual = line.indexOf("=");
@@ -162,6 +180,13 @@ async function AbstractCommand(line) {
   else if (command in object_data) new object(line);
   else if (name && name in variable_data) variable(line);
   // 명령 종류: 변수 선언, 더하가, 연산, 이프
+}
+
+function easter_egg() {
+  code.value = '';
+  pos = 0;
+  console.log(document.getElementById("run-svg"));
+  document.getElementById("run-svg").classList.remove("hide");
 }
 
 function variable(value) {
@@ -308,6 +333,10 @@ function create_object(value) {
   if (!type) {
     error('형식은 "물체 물체명 HTML태그"이여야 합니다.');
   }else {
+    if (!isNaN(type)) {
+      error(`"${type}"은 유요한 HTML태그가 아닙니다.`);
+      return;
+    }
     const tempElement = document.createElement(type);
     if (tempElement instanceof HTMLUnknownElement) {
       error(`"${type}"은 유요한 HTML태그가 아닙니다.`);
@@ -328,13 +357,18 @@ function create_object(value) {
 class object {
   constructor(data) {
     const parts = data.trim().split(/\s+/);
-    if (!(parts.length >= 3 || (parts.length === 2 && (parts[1] === "제거" || parts[1] === "색상")))) {
+    if (!(parts.length >= 3 || (parts.length === 2 && (parts[1] === "제거" || parts[1] === "색상" || parts[1] === "모서리")))) {
       error(`올바르지 않은 형식 "${data}"`);
       return;
     }
     let rest;
     [this.name, this.func, ...rest] = parts;
-    rest = (rest.join(" ")).split(",");
+    let temp = rest.join(' ');
+    if (!(temp.includes(',')||this.func === "색상")) {
+      error("You miss ','");
+      return;
+    }
+    rest = temp.split(",");
     if (this.func === "색상") this.value = rest;
     else this.value = rest.map(v => calculate_data(v));
     this.func_type();
@@ -345,6 +379,7 @@ class object {
     else if (this.func==="이동") this.move();
     else if (this.func==="제거") this.remove();
     else if (this.func==="색상") this.color();
+    else if (this.func==="모서리") this.border();
   }
 
   color() {
@@ -374,9 +409,14 @@ class object {
     let [w, h] = this.value;
     let target = object_data[this.name];
     if (!isNaN(h.value)) h.value+="px"; 
-    if (!isNaN(w.value)) w.value+= "px";
+    if (!isNaN(w.value)) w.value+="px";
     target.style.height = h.value;
     target.style.width = w.value;
+  }
+
+  border() {
+    console.log(this.value);
+    object_data[this.name].style.borderRadius = this.value.map(v=>v.value).join("px ")+"px";
   }
 
   move() {
@@ -418,7 +458,7 @@ async function run() {
   function_data = {}
   object_data = {}
   local_stack = []
-  runArea.innerHTML = '';
+  runArea.innerHTML = `<div id="run-svg" class="hide"><svg xmlns="http://www.w3.org/2000/svg" width="139" height="124" viewBox="0 0 139 124" fill="none" style="position: absolute; left:calc(50% - 69.5px); top:calc(50% - 62px)"><path d="M69.5 123.35L59.4225 114.502C23.63 83.1991 0 62.4868 0 37.2165C0 16.5042 16.819 0.350006 38.225 0.350006C50.318 0.350006 61.9245 5.77943 69.5 14.2922C77.0755 5.77943 88.682 0.350006 100.775 0.350006C122.181 0.350006 139 16.5042 139 37.2165C139 62.4868 115.37 83.1991 79.5775 114.502L69.5 123.35Z" fill="#FF0000"/></svg></div>`;
   terminal.innerHTML = '';
   skip = false;
   start_pos = 0;
